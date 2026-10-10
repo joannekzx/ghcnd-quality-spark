@@ -1,11 +1,13 @@
 """One place to create the Spark session, so notebooks, the CLI and the tests agree."""
 import os
+import sys
 
 from pyspark.sql import SparkSession
 
 
 def get_spark(app_name: str = "ghcnd-quality", shuffle_partitions: int = 16) -> SparkSession:
     """Local-mode session. Set SPARK_DRIVER_MEMORY (e.g. 8g) for bigger runs."""
+    os.environ.setdefault("PYSPARK_PYTHON", sys.executable)  # workers use the driver's interpreter
     return (
         SparkSession.builder.master("local[*]")
         .appName(app_name)
