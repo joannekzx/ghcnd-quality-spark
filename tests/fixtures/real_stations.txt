@@ -1,0 +1,3 @@
+ACW00011604  17.1167  -61.7833   10.1    ST JOHNS COOLIDGE FLD                       
+ACW00011647  17.1333  -61.7833   19.2    ST JOHNS                                    
+ASN00001011 -16.0497  124.9500 -999.9    PANTA DOWNS                                 

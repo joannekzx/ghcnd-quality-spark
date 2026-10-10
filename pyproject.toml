@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghcnd-quality"
+version = "0.1.0"
+description = "Quality audit of NOAA GHCN-Daily with Spark (PySpark, Spark SQL, pandas)"
+requires-python = ">=3.10"
+dependencies = ["pyspark>=4.0", "pyarrow", "pandas"]
+
+[project.optional-dependencies]
+notebooks = ["jupyterlab", "matplotlib"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
