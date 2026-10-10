@@ -19,9 +19,12 @@ def load_series(parquet_dir, elements=("TMAX", "TMIN")) -> pd.DataFrame:
     cols = ["station_id", "element", "date", "value", "qflag"]
     t = ds.dataset(str(parquet_dir) + "/daily", format="parquet", partitioning="hive") \
           .to_table(columns=cols, filter=ds.field("element").isin(list(elements))).to_pandas()
+    t["station_id"] = t["station_id"].astype("category")
+    t["element"] = t["element"].astype("category")
     t["day"] = (pd.to_datetime(t["date"]) - pd.Timestamp("1800-01-01")).dt.days.astype("int32")
     t["month"] = pd.to_datetime(t["date"]).dt.month.astype("int8")
-    t["group"] = pd.factorize(t["station_id"].astype(str) + "|" + t["element"].astype(str))[0].astype("int32")
+    t["group"] = (t["station_id"].astype("category").cat.codes.astype("int32") * 8
+                  + t["element"].astype("category").cat.codes.astype("int32"))
     return t.sort_values(["group", "day"]).reset_index(drop=True)[["group", "station_id", "element", "day", "month", "value", "qflag"]]
 
 
